@@ -15,14 +15,14 @@ const driverSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
-    //   match: [/\S+@\S+\.\S+/, "Please provide a valid email address."],
+      match: [/\S+@\S+\.\S+/, "Please provide a valid email address."],
     },
     phone: {
       type: String,
       required:true,
       unique: true,
       trim: true,
-      match: [/^\d{11}$/, "Phone number must be 11 digits."],
+      match: [/^\+?\d{10,15}$/, "Phone number must be 11 digits."],
     },
     password: {
       type: String,
