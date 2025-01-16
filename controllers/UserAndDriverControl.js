@@ -11,14 +11,14 @@ const userSignUp = async (req, res) => {
     const { name, email, phone, password, TandC } = req.body;
 
     // Input Validation
-    if (!name) {
-      return res.status(400).json({
-        message: "Please provideee your name, email, phone, password, and agree to the Terms and Conditions.",
-        error: true,
-        success: false,
-      });
+    // if (!name) {
+    //   return res.status(400).json({
+    //     message: "Please provideee your name, email, phone, password, and agree to the Terms and Conditions.",
+    //     error: true,
+    //     success: false,
+    //   });
       
-    }
+    // }
   
 
     // // Check if email already exists
