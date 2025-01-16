@@ -11,9 +11,9 @@ const userSignUp = async (req, res) => {
     const { name, email, phone, password, TandC } = req.body;
 
     Input Validation
-    if (!name || !email || !phone || !password || TandC!== true) {
+    if (!name || !email || !phone || !password || TandC!==true) {
       return res.status(400).json({
-        message: "Please provide name, email, phone, password, and agree to the Terms and Conditions.",
+        message: "Please provide your name, email, phone, password, and agree to the Terms and Conditions.",
         error: true,
         success: false,
       });
