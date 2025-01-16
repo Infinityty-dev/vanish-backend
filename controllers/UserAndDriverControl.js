@@ -11,25 +11,25 @@ const userSignUp = async (req, res) => {
     const { name, email, phone, password, TandC } = req.body;
 
     //Input Validation
-    // if (!email ) {
-    //   return res.status(400).json({
-    //     message: "Please provide the name, email, phone, password, and agree to the Terms and Conditions.",
-    //     error: true,
-    //     success: false,
-    //   });
+    if (!name|| !email || !phone || !password || TandC!==true ) {
+      return res.status(400).json({
+        message: "Please provide name, email, phone, password, and agree to the Terms and Conditions.",
+        error: true,
+        success: false,
+      });
       
-    // }
+    }
   
 
-    // // Check if email already exists
-    // const existingUser = await userModel.findOne({ email: email.toLowerCase().trim() });
-    // if (existingUser) {
-    //   return res.status(400).json({
-    //     message: "Email already exists.",
-    //     error: true,
-    //     success: false,
-    //   });
-    // }
+    // Check if email already exists
+    const existingUser = await userModel.findOne({ email: email.toLowerCase().trim() });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Email already exists.",
+        error: true,
+        success: false,
+      });
+    }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
