@@ -83,7 +83,12 @@ const driverSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Completed deliveries cannot be negative."],
     },
-    avatar: {
+    driverAvatar: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    carAvatar: {
       type: String,
       trim: true,
       default: null,
@@ -93,14 +98,14 @@ const driverSchema = new mongoose.Schema(
       trim: true,
       default: null,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User'
+    },
   },
   { timestamps: true }
 );
-
-// Create indexes for better query performance
-// driverSchema.index({ email: 1 });
-// driverSchema.index({ phone: 1 });
-// driverSchema.index({ driverLicenceNumber: 1 });
 
 // Compile the schema into a model
 const driverModel = mongoose.model("Driver", driverSchema);

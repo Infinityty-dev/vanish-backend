@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema(
     userAccount: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Services",
+        ref: "Service",
       },
     ],
   },
