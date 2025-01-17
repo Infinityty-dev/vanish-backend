@@ -105,4 +105,33 @@ const userMovementPlan = async (req, res) => {
   }
 };
 
-module.exports = { userMovementPlan };
+//**************************************************************************************************************** */
+
+const userMovementId = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    if (!userId) {
+      return res.status(400).json({
+        message: "User ID not provided.",
+        error: true,
+        success: false,
+      });
+    }
+
+    res.status(200).json({
+      message: "User ID found successfully.",
+      data: userId,
+      success: true,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message || "Server error occurred.",
+      error: true,
+      success: false,
+    });
+  }
+};
+
+
+module.exports = { userMovementPlan,userMovementId };

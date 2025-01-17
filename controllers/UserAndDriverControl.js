@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../models/UserModel.js");
 const driverModel = require("../models/DriverModel.js")
+const cloudinery = require("../database/cloudinary.js");
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
@@ -145,7 +146,19 @@ const driverSignUp = async (req, res) => {
             licenceType
         } = req.body;
 
-        // Validate inputs using an array
+        // Validate file upload
+        if (!req.files || !req.files.driverAvatar || !req.files.carAvatar) {
+            return res.status(400).json({
+                message: "Driver and Car images are required.",
+                error: true,
+                success: false
+            });
+        }
+
+        const driverImageUpload = await cloudinary.uploader.upload(req.files.driverAvatar.path);
+        const carImageUpload = await cloudinary.uploader.upload(req.files.carAvatar.path);
+
+        // Validate required fields
         const requiredFields = [
             { field: name, name: "Full Name" },
             { field: email, name: "Email" },
@@ -166,8 +179,8 @@ const driverSignUp = async (req, res) => {
             });
         }
 
-        // Ensure Terms and Conditions is accepted
-        if (TandC !== true) {
+        // Normalize and validate TandC input
+        if (TandC !== true && TandC !== "true") {
             return res.status(400).json({
                 message: "You must agree to the Terms and Conditions.",
                 error: true,
@@ -175,7 +188,17 @@ const driverSignUp = async (req, res) => {
             });
         }
 
-        // Check if the email already exists
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                message: "Invalid email format.",
+                error: true,
+                success: false
+            });
+        }
+
+        // Check if email exists
         const existingDriver = await driverModel.findOne({ email });
         if (existingDriver) {
             return res.status(400).json({
@@ -185,22 +208,28 @@ const driverSignUp = async (req, res) => {
             });
         }
 
-        // Hash the password
+        // Hash password
         const driverHashedPassword = await bcrypt.hash(password, 10);
 
-        // Create a new driver
+        // Create new driver
         const newDriver = new driverModel({
             name,
             email,
             phone,
             password: driverHashedPassword,
-            TandC,
+            TandC: true,
             carType,
+            driverAvatar: driverImageUpload.secure_url,
+            carAvatar: carImageUpload.secure_url,
+            avatarID: {
+                driverAvatarID: driverImageUpload.public_id,
+                carAvatarID: carImageUpload.public_id
+            },
             driverLicenceNumber,
             licenceType
         });
 
-        // Save the driver to the database
+        // Save to DB
         const savedDriver = await newDriver.save();
 
         return res.status(201).json({
@@ -210,14 +239,15 @@ const driverSignUp = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Driver SignUp Error:", error.message);
+        console.error("Driver SignUp Error:", error);
         return res.status(500).json({
-            message: error.message || "Sign up unsuccessful.",
+            message: "Sign up unsuccessful. Please try again later.",
             error: true,
             success: false
         });
     }
 };
+
 
 
 
