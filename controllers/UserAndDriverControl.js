@@ -137,6 +137,7 @@ const driverSignUp = async (req, res) => {
     try {
         const {
             name,
+            address,
             email,
             phone,
             password,
@@ -147,20 +148,20 @@ const driverSignUp = async (req, res) => {
         } = req.body;
 
         // Validate file upload
-        if (!req.files || !req.files.driverAvatar || !req.files.carAvatar) {
+        if (!req.files || !req.files.driverAvatar ) {
             return res.status(400).json({
-                message: "Driver and Car images are required.",
+                message: "Driver  image is required.",
                 error: true,
                 success: false
             });
         }
 
         const driverImageUpload = await cloudinary.uploader.upload(req.files.driverAvatar.path);
-        const carImageUpload = await cloudinary.uploader.upload(req.files.carAvatar.path);
-
+       
         // Validate required fields
         const requiredFields = [
             { field: name, name: "Full Name" },
+            { field: address, name: "Address" },
             { field: email, name: "Email" },
             { field: phone, name: "Phone" },
             { field: password, name: "Password" },
@@ -215,16 +216,13 @@ const driverSignUp = async (req, res) => {
         const newDriver = new driverModel({
             name,
             email,
+            address,
             phone,
             password: driverHashedPassword,
             TandC: true,
             carType,
             driverAvatar: driverImageUpload.secure_url,
-            carAvatar: carImageUpload.secure_url,
-            avatarID: {
-                driverAvatarID: driverImageUpload.public_id,
-                carAvatarID: carImageUpload.public_id
-            },
+            avatarID: {driverAvatarID: driverImageUpload.public_id},
             driverLicenceNumber,
             licenceType
         });
