@@ -5,7 +5,7 @@ require('dotenv').config();
 const connectDatabase = require('./database/db.js'); // Import database connection
 const userMovementRoutes = require('./route/MovementRoute.js'); // Existing routes
 const userAndDriverRoutes = require('./route/UserDriverRoute.js'); // Existing routes
-const locationRoutes = require('./route/locationRoute.js'); // New Location routes
+const locationRoutes = require('./route/locationRoutes.js'); // New Location routes
 
 // Initialize Express App
 const server = express();
