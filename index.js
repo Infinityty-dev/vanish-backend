@@ -6,7 +6,7 @@ const connectDatabase = require('./database/db.js'); // Import database connecti
 const userMovementRoutes = require('./route/MovementRoute.js'); // Existing routes
 const userAndDriverRoutes = require('./route/UserDriverRoute.js'); // Existing routes
 const { paymentGateway } = require('./controllers/paymentGateway.js');
-// const locationRoutes = require('./route/LocationRoute.js'); // New Location routes
+const locationRoutes = require('./route/locationRoutes.js'); // New Location routes
 
 // Initialize Express App
 const server = express();
@@ -24,7 +24,7 @@ server.use(cors());
 server.use('/api/v1/movements', userMovementRoutes);
 server.use('/api/v1/users', userAndDriverRoutes);
 server.use('/api/v1/payment', paymentGateway )
-// server.use('/api/v1/locations', locationRoutes); 
+server.use('/api/v1/locations', locationRoutes); 
 
 // Global Error Handler
 server.use((err, req, res, next) => {

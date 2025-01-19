@@ -134,4 +134,61 @@ const userMovementId = async (req, res) => {
 };
 
 
-module.exports = { userMovementPlan,userMovementId };
+
+//*************************************************************************************************************** */
+
+// const orderAssessment = async(req,res) =>{
+  
+//   //fetching existing data
+//     try {
+//       const orderInfo = await MovementModel.find().select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone  runningService: user._id,');
+  
+//       res.status(200).json({
+//         message: 'User data fetched successfully',
+//         data: orderInfo,
+//         success: true,
+//       });
+//     } catch (error) {
+//       res.status(500).json({ error: 'Failed to fetch user data' });
+//     }
+//   };
+
+const orderAssessment = async (req, res) => {
+  try {
+    // Apply filters, pagination, and field selection
+    const { page = 1, limit = 10 } = req.query; // Default pagination values
+
+    const orderInfo = await MovementModel.find()
+      .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone') // Select only required fields
+      .skip((page - 1) * limit) // Skip documents for pagination
+      .limit(Number(limit)); // Limit the number of documents per page
+
+    // If no data is found
+    if (!orderInfo.length) {
+      return res.status(404).json({
+        message: 'No orders found',
+        data: [],
+        success: false,
+      });
+    }
+
+    res.status(200).json({
+      message: 'Order data fetched successfully',
+      data: orderInfo,
+      success: true,
+    });
+  } catch (error) {
+    console.error(error); // Log detailed error for debugging
+    res.status(500).json({
+      message: 'Failed to fetch order data',
+      error: error.message,
+      success: false,
+    });
+  }
+};
+
+//GET /api/orders?page=1&limit=5
+
+
+
+module.exports = { userMovementPlan,userMovementId, orderAssessment };
