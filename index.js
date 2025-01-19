@@ -5,7 +5,8 @@ require('dotenv').config();
 const connectDatabase = require('./database/db.js'); // Import database connection
 const userMovementRoutes = require('./route/MovementRoute.js'); // Existing routes
 const userAndDriverRoutes = require('./route/UserDriverRoute.js'); // Existing routes
-const locationRoutes = require('./route/LocationRoute.js'); // New Location routes
+const { paymentGateway } = require('./controllers/paymentGateway.js');
+// const locationRoutes = require('./route/LocationRoute.js'); // New Location routes
 
 // Initialize Express App
 const server = express();
@@ -22,7 +23,8 @@ server.use(cors());
 // API Routes
 server.use('/api/v1/movements', userMovementRoutes);
 server.use('/api/v1/users', userAndDriverRoutes);
-server.use('/api/v1/locations', locationRoutes); // Add Location Routes
+server.use('/api/v1/payment', paymentGateway )
+// server.use('/api/v1/locations', locationRoutes); 
 
 // Global Error Handler
 server.use((err, req, res, next) => {
