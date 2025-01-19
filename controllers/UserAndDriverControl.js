@@ -156,7 +156,7 @@ const driverSignUp = async (req, res) => {
             });
         }
 
-        const driverImageUpload = await cloudinary.uploader.upload(req.files.driverAvatar.path);
+        // const driverImageUpload = await cloudinary.uploader.upload(req.files.driverAvatar.path);
        
         // Validate required fields
         const requiredFields = [
@@ -221,8 +221,8 @@ const driverSignUp = async (req, res) => {
             password: driverHashedPassword,
             TandC: true,
             carType,
-            driverAvatar: driverImageUpload.secure_url,
-            avatarID: {driverAvatarID: driverImageUpload.public_id},
+            // driverAvatar: driverImageUpload.secure_url,
+            // avatarID: {driverAvatarID: driverImageUpload.public_id},
             driverLicenceNumber,
             licenceType
         });
@@ -310,6 +310,11 @@ const driverSignIn = async (req, res) => {
         });
     }
 };
+
+
+//************************************************************************************************************************************* */
+
+
 
 
 module.exports = {userSignUp, userSignIn ,driverSignUp,driverSignIn};
