@@ -153,41 +153,139 @@ const userMovementId = async (req, res) => {
 //     }
 //   };
 
+// const orderAssessment = async (req, res) => {
+//   try {
+//     // Apply filters, pagination, and field selection
+//     const {userId, page = 1, limit = 2 } = req.query; // Default pagination values
+
+//     const orderInfo = await MovementModel.findOne({userId})
+//       .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone ') // Select only required fields
+//       .skip((page - 1) * limit) // Skip documents for pagination
+//       .limit(Number(limit)); // Limit the number of documents per page
+
+//     // If no data is found
+//     if (!orderInfo.length) {
+//       return res.status(404).json({
+//         message: 'No orders found',
+//         data: [],
+//         success: false,
+//       });
+//     }
+
+//     res.status(200).json({
+//       message: 'Order data fetched successfully',
+//       data: orderInfo,
+//       success: true,
+//     });
+//   } catch (error) {
+//     console.error(error); // Log detailed error for debugging
+//     res.status(500).json({
+//       message: 'Failed to fetch order data',
+//       error: error.message,
+//       success: false,
+//     });
+//   }
+// };
+
+//GET /api/orders?page=1&limit=5
+
+// const orderAssessment = async (req, res) => {
+//   try {
+//     // Extract filters and pagination values from the query
+//     const { userId, page = 1, limit = 10, sort = 'pickUpDate', order = 'asc' } = req.query;
+
+//     // Validate pagination values
+//     const pageNumber = Math.max(1, parseInt(page));
+//     const limitNumber = Math.max(1, parseInt(limit));
+
+//     // Build the filter query
+//     const filters = {};
+//     if (userId) filters.runningService = userId; // Filter by userId if provided
+
+//     // Fetch data with filters, pagination, and sorting
+//     const orderInfo = await MovementModel.find(filters)
+//       .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone') // Select only necessary fields
+//       .sort({ [sort]: order === 'desc' ? -1 : 1 }) // Sort dynamically based on query
+//       .skip((pageNumber - 1) * limitNumber) // Skip documents for pagination
+//       .limit(limitNumber); // Limit documents per page
+
+//     // If no data is found
+//     if (!orderInfo.length) {
+//       return res.status(404).json({
+//         message: 'No orders found for the given criteria',
+//         data: [],
+//         success: false,
+//       });
+//     }
+
+//     // Count total records for pagination metadata
+//     const totalOrders = await MovementModel.countDocuments(filters);
+
+//     res.status(200).json({
+//       message: 'Order data fetched successfully',
+//       data: orderInfo,
+//       pagination: {
+//         totalOrders,
+//         currentPage: pageNumber,
+//         totalPages: Math.ceil(totalOrders / limitNumber),
+//       },
+//       success: true,
+//     });
+//   } catch (error) {
+//     console.error('Error fetching order data:', error.message); // Log error for debugging
+//     res.status(500).json({
+//       message: 'Failed to fetch order data',
+//       error: error.message,
+//       success: false,
+//     });
+//   }
+// };
+
+//*************************************************************************** */
+
+
 const orderAssessment = async (req, res) => {
   try {
-    // Apply filters, pagination, and field selection
-    const { page = 1, limit = 10 } = req.query; // Default pagination values
+    const { userId } = req.params; // Extract userId from route parameters
 
-    const orderInfo = await MovementModel.find()
-      .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone') // Select only required fields
-      .skip((page - 1) * limit) // Skip documents for pagination
-      .limit(Number(limit)); // Limit the number of documents per page
-
-    // If no data is found
-    if (!orderInfo.length) {
-      return res.status(404).json({
-        message: 'No orders found',
-        data: [],
+    // Validate that userId is provided
+    if (!userId) {
+      return res.status(400).json({
+        message: "User ID is required.",
         success: false,
       });
     }
 
+    // Find the latest order for the given userId
+    const orderInfo = await MovementModel.findOne({ runningService: userId })
+      .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone') // Select necessary fields
+      .sort({ createdAt: -1 }); // Sort by creation date (latest order first)
+
+    // If no orders are found
+    if (!orderInfo) {
+      return res.status(404).json({
+        message: "No current order found for this user.",
+        success: false,
+        data: null,
+      });
+    }
+
+    // Respond with the order information
     res.status(200).json({
-      message: 'Order data fetched successfully',
-      data: orderInfo,
+      message: "Current order data fetched successfully.",
       success: true,
+      data: orderInfo,
     });
   } catch (error) {
-    console.error(error); // Log detailed error for debugging
+    // Handle server errors
+    console.error("Error fetching current order:", error.message);
     res.status(500).json({
-      message: 'Failed to fetch order data',
-      error: error.message,
+      message: "Failed to fetch current order data.",
       success: false,
+      error: error.message,
     });
   }
 };
-
-//GET /api/orders?page=1&limit=5
 
 
 
