@@ -162,7 +162,7 @@ const userMovementId = async (req, res) => {
 //     const {userId, page = 1, limit = 2 } = req.query; // Default pagination values
 
 //     const orderInfo = await MovementModel.findOne({userId})
-//       .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone ') // Select only required fields
+//       .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone typeOfVehicle') // Select only required fields
 //       .skip((page - 1) * limit) // Skip documents for pagination
 //       .limit(Number(limit)); // Limit the number of documents per page
 
@@ -261,7 +261,7 @@ const orderAssessment = async (req, res) => {
 
     // Find the latest order for the given userId
     const orderInfo = await MovementModel.findOne({ runningService: userId })
-      .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone') // Select necessary fields
+      .select('serviceType pickUpDate pickUpLocation pickUpZone dropOffLocation dropOffZone typeOfVehicle') // Select necessary fields
       .sort({ createdAt: -1 }); // Sort by creation date (latest order first)
 
     // If no orders are found
