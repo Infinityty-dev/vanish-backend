@@ -314,7 +314,29 @@ const driverSignIn = async (req, res) => {
 
 //************************************************************************************************************************************* */
 
+const getAllDrivers =async (req, res)=>{
+    try {
+        
+        
+        //verifying if email exists in database
+        const drivers = await driverModel.find()
+
+        res.status(201).json({
+            message:"Driver Details fetch successful",
+            data:{ ...drivers }
+        })
+           
+            
+        
+    } catch (error) {
+        //server based
+        res.status(500).json({
+            message:  error.message ||"Sign in unsuccessfull",
+            error:true,
+            success:false
+        })
+    }
+}
 
 
-
-module.exports = {userSignUp, userSignIn ,driverSignUp,driverSignIn};
+module.exports = {userSignUp, userSignIn ,driverSignUp,driverSignIn, getAllDrivers};
