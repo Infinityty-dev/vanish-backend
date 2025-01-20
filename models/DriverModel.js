@@ -83,21 +83,21 @@ const driverSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Completed deliveries cannot be negative."],
     },
-    driverAvatar: {
-      type: String,
-      trim: true,
-      default: null,
-    },
-    carAvatar: {
-      type: String,
-      trim: true,
-      default: null,
-    },
-    avatarID: {
-      type: String,
-      trim: true,
-      default: null,
-    },
+    // driverAvatar: {
+    //   type: String,
+    //   trim: true,
+    //   default: null,
+    // },
+    // carAvatar: {
+    //   type: String,
+    //   trim: true,
+    //   default: null,
+    // },
+    // avatarID: {
+    //   type: String,
+    //   trim: true,
+    //   default: null,
+    // },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
