@@ -24,6 +24,7 @@ const {
   userSignIn,
   driverSignUp,
   driverSignIn,
+  getAllDrivers
 } = require('../controllers/UserAndDriverControl.js');
 
 // User Routes
@@ -33,5 +34,6 @@ router.post('/userSignin', userSignIn);
 // Driver Routes with image upload middleware
 router.post('/driverSignup', driverImage, driverSignUp);
 router.post('/driverSignin', driverSignIn);
+router.get('/get-all-drivers', getAllDrivers);
 
 module.exports = router;
