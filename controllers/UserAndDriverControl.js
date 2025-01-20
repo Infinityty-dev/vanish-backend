@@ -148,13 +148,13 @@ const driverSignUp = async (req, res) => {
         } = req.body;
 
         // Validate file upload
-        if (!req.files || !req.files.driverAvatar ) {
-            return res.status(400).json({
-                message: "Driver  image is required.",
-                error: true,
-                success: false
-            });
-        }
+        // if (!req.files ) {
+        //     return res.status(400).json({
+        //         message: "Driver  image is required.",
+        //         error: true,
+        //         success: false
+        //     });
+        // }
 
         // const driverImageUpload = await cloudinary.uploader.upload(req.files.driverAvatar.path);
        
