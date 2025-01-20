@@ -46,6 +46,11 @@ const serviceSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    typeOfVehicle:{
+      type: String,
+      required: true,
+      trim: true,
+      enum: ["Small Van", "Medium Van", "Large Van"],
   },
   { timestamps: true }
 );
