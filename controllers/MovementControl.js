@@ -16,6 +16,7 @@ const userMovementPlan = async (req, res) => {
       pickUpZone,
       dropOffLocation,
       dropOffZone,
+      typeOfVehicle,
     } = req.body;
 
     const userId = req.params.id;
@@ -27,7 +28,8 @@ const userMovementPlan = async (req, res) => {
       !pickUpLocation ||
       !pickUpZone ||
       !dropOffLocation ||
-      !dropOffZone
+      !dropOffZone ||
+      !typeOfVehicle
     ) {
       return res.status(400).json({
         message: "All input fields are required.",
@@ -69,6 +71,7 @@ const userMovementPlan = async (req, res) => {
           pickUpZone,
           dropOffLocation,
           dropOffZone,
+          typeOfVehicle,
           runningService: user._id,
         },
       ],
