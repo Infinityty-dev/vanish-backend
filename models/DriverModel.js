@@ -45,7 +45,6 @@ const driverSchema = new mongoose.Schema(
     },
     carType: {
       type: String,
-      trim: true,
       enum: ["Small Van", "Medium Van", "Large Van"],
       default: null,
     },
