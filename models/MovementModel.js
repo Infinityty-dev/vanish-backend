@@ -52,6 +52,7 @@ const serviceSchema = new mongoose.Schema(
       trim: true,
       enum: ["Small Van", "Medium Van", "Large Van"],
   },
+},
   { timestamps: true }
 );
 
