@@ -7,7 +7,7 @@ const driverSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-    //   minlength: [3, "Full name must be at least 3 characters long."],
+    
     },
     email: {
       type: String,
